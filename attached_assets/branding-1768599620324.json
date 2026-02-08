@@ -1,0 +1,110 @@
+{
+  "colorScheme": "dark",
+  "fonts": [
+    {
+      "family": "Inter",
+      "count": 57
+    },
+    {
+      "family": "Inter Fallback",
+      "count": 57
+    },
+    {
+      "family": "system-ui",
+      "count": 57
+    },
+    {
+      "family": "-apple-system",
+      "count": 57
+    },
+    {
+      "family": "sans-serif",
+      "count": 57
+    },
+    {
+      "family": "Geist Mono",
+      "count": 7
+    },
+    {
+      "family": "Geist Mono Fallback",
+      "count": 7
+    }
+  ],
+  "colors": {
+    "primary": "#0F172B",
+    "accent": "#1D293D",
+    "background": "#000000",
+    "textPrimary": "#000000",
+    "link": "#1D293D"
+  },
+  "typography": {
+    "fontFamilies": {
+      "primary": "Inter",
+      "heading": "Inter"
+    },
+    "fontStacks": {
+      "body": [
+        "Inter",
+        "Inter Fallback",
+        "system-ui",
+        "-apple-system",
+        "sans-serif"
+      ],
+      "heading": [
+        "Inter",
+        "Inter Fallback",
+        "system-ui",
+        "-apple-system",
+        "sans-serif"
+      ],
+      "paragraph": [
+        "Inter",
+        "Inter Fallback",
+        "system-ui",
+        "-apple-system",
+        "sans-serif"
+      ]
+    },
+    "fontSizes": {
+      "h1": "72px",
+      "h2": "60px",
+      "body": "14px"
+    }
+  },
+  "spacing": {
+    "baseUnit": 8,
+    "borderRadius": "0px"
+  },
+  "components": {},
+  "images": {
+    "logo": "File saved at: attached_assets/logo.png",
+    "favicon": null,
+    "ogImage": null
+  },
+  "__framework_hints": [
+    "v0.app"
+  ],
+  "__llm_logo_reasoning": {
+    "selectedIndex": 0,
+    "reasoning": "Strong indicators: header logo linking to homepage, header location, visible, top-left position, highest logo on page, alt matches logo/brand, src contains logo, alt contains brand name \"Cool Cat Stuff\", reasonable size. Score: 137 (clear winner by 137 points)",
+    "confidence": 0.9
+  },
+  "__llm_button_reasoning": {
+    "primary": {
+      "index": -1,
+      "text": "N/A",
+      "reasoning": "LLM failed"
+    },
+    "secondary": {
+      "index": -1,
+      "text": "N/A",
+      "reasoning": "LLM failed"
+    },
+    "confidence": 0
+  },
+  "confidence": {
+    "buttons": 0,
+    "colors": 0,
+    "overall": 0
+  }
+}

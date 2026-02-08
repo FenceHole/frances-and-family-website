@@ -1,0 +1,82 @@
+{
+  "colorScheme": "light",
+  "fonts": [
+    {
+      "family": "Geist",
+      "count": 94
+    },
+    {
+      "family": "Geist Fallback",
+      "count": 94
+    }
+  ],
+  "colors": {
+    "primary": "#B8492E",
+    "accent": "#1C222B",
+    "background": "#FAF8F5",
+    "textPrimary": "#1C222B",
+    "link": "#1C222B"
+  },
+  "typography": {
+    "fontFamilies": {
+      "primary": "Geist",
+      "heading": "Geist"
+    },
+    "fontStacks": {
+      "body": [
+        "Geist",
+        "Geist Fallback"
+      ],
+      "heading": [
+        "Geist",
+        "Geist Fallback"
+      ],
+      "paragraph": [
+        "Geist",
+        "Geist Fallback"
+      ]
+    },
+    "fontSizes": {
+      "h1": "96px",
+      "h2": "48px",
+      "body": "36px"
+    }
+  },
+  "spacing": {
+    "baseUnit": 8,
+    "borderRadius": "0px"
+  },
+  "components": {},
+  "images": {
+    "logo": "File saved at: attached_assets/logo.svg",
+    "favicon": "File saved at: attached_assets/favicon.png",
+    "ogImage": null
+  },
+  "__framework_hints": [
+    "v0.app"
+  ],
+  "__llm_logo_reasoning": {
+    "selectedIndex": 0,
+    "reasoning": "Logo rejected: Red flags detected (small square icon). Heuristic fallback: Moderate indicators: in header, no link (brand logos usually link to homepage, penalty), header location, visible, small square icon (likely UI icon, heavy penalty), SVG format. Score: 36. May benefit from LLM validation.",
+    "confidence": 0.5,
+    "rejected": true
+  },
+  "__llm_button_reasoning": {
+    "primary": {
+      "index": -1,
+      "text": "N/A",
+      "reasoning": "LLM failed"
+    },
+    "secondary": {
+      "index": -1,
+      "text": "N/A",
+      "reasoning": "LLM failed"
+    },
+    "confidence": 0
+  },
+  "confidence": {
+    "buttons": 0,
+    "colors": 0,
+    "overall": 0
+  }
+}
