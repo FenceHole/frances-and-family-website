@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Twitter, Instagram, Youtube, ExternalLink, Play } from "lucide-react";
@@ -9,31 +9,86 @@ declare global {
     twttr?: {
       widgets: {
         load: (element?: HTMLElement) => void;
+        createTimeline: (
+          source: { sourceType: string; screenName: string },
+          target: HTMLElement,
+          options?: Record<string, unknown>
+        ) => Promise<HTMLElement>;
       };
+      ready: (callback: () => void) => void;
     };
   }
 }
 
 export function SocialFeed() {
   const twitterRef = useRef<HTMLDivElement>(null);
+  const [twitterLoaded, setTwitterLoaded] = useState(false);
+  const [twitterFailed, setTwitterFailed] = useState(false);
 
   useEffect(() => {
+    const existingScript = document.querySelector('script[src="https://platform.twitter.com/widgets.js"]');
+    if (existingScript) {
+      existingScript.remove();
+    }
+
     const script = document.createElement("script");
     script.src = "https://platform.twitter.com/widgets.js";
     script.async = true;
     script.charset = "utf-8";
-    document.body.appendChild(script);
+    document.head.appendChild(script);
+
+    const timeout = setTimeout(() => {
+      if (!twitterLoaded) {
+        setTwitterFailed(true);
+      }
+    }, 8000);
 
     script.onload = () => {
-      if (window.twttr && twitterRef.current) {
+      if (window.twttr && window.twttr.ready) {
+        window.twttr.ready(() => {
+          if (twitterRef.current) {
+            twitterRef.current.innerHTML = '';
+            window.twttr!.widgets
+              .createTimeline(
+                { sourceType: "profile", screenName: "CoolCatStuff" },
+                twitterRef.current!,
+                {
+                  height: 400,
+                  chrome: "noheader nofooter noborders transparent",
+                  theme: "light",
+                  dnt: true,
+                }
+              )
+              .then(() => {
+                setTwitterLoaded(true);
+                clearTimeout(timeout);
+              })
+              .catch(() => {
+                setTwitterFailed(true);
+                clearTimeout(timeout);
+              });
+          }
+        });
+      } else if (window.twttr && twitterRef.current) {
         window.twttr.widgets.load(twitterRef.current);
+        setTimeout(() => {
+          const iframe = twitterRef.current?.querySelector("iframe");
+          if (iframe) {
+            setTwitterLoaded(true);
+          } else {
+            setTwitterFailed(true);
+          }
+        }, 5000);
       }
     };
 
+    script.onerror = () => {
+      setTwitterFailed(true);
+      clearTimeout(timeout);
+    };
+
     return () => {
-      if (document.body.contains(script)) {
-        document.body.removeChild(script);
-      }
+      clearTimeout(timeout);
     };
   }, []);
 
@@ -67,16 +122,27 @@ export function SocialFeed() {
                 <p className="text-sm text-muted-foreground">@CoolCatStuff</p>
               </div>
             </div>
-            <div ref={twitterRef} className="min-h-[350px]">
-              <a
-                className="twitter-timeline"
-                data-height="350"
-                data-theme="light"
-                data-chrome="noheader nofooter noborders transparent"
-                href="https://twitter.com/CoolCatStuff?ref_src=twsrc%5Etfw"
-              >
-                Loading posts...
-              </a>
+            <div ref={twitterRef} className="min-h-[400px]">
+              {!twitterLoaded && !twitterFailed && (
+                <div className="flex flex-col items-center justify-center h-[400px] text-center">
+                  <div className="w-8 h-8 border-2 border-gray-300 border-t-black rounded-full animate-spin mb-4" />
+                  <p className="text-sm text-muted-foreground">Loading tweets...</p>
+                </div>
+              )}
+              {twitterFailed && (
+                <div className="flex flex-col items-center justify-center h-[400px] text-center p-6 bg-gradient-to-br from-gray-50 to-slate-50 rounded-xl">
+                  <Twitter className="w-12 h-12 text-gray-800 mb-4" />
+                  <h4 className="font-bold text-lg mb-2">Cool Cat Stuff</h4>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Cat product reviews, live unboxings, and daily chaos with the family.
+                  </p>
+                  <div className="text-3xl font-bold font-serif text-gray-800 mb-1">6.9K+</div>
+                  <div className="text-xs text-muted-foreground mb-4">Followers</div>
+                  <p className="text-xs text-muted-foreground italic">
+                    Follow us on X for the latest updates!
+                  </p>
+                </div>
+              )}
             </div>
             <Button variant="outline" className="w-full mt-4 rounded-full" asChild>
               <a href="https://twitter.com/CoolCatStuff" target="_blank" rel="noopener noreferrer">

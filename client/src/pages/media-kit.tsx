@@ -208,8 +208,72 @@ export default function MediaKit() {
         </div>
       </section>
 
-      {/* Press Features */}
+      {/* Viral Highlights */}
       <section className="py-16">
+        <div className="container px-6 mx-auto">
+          <div className="text-center mb-12">
+            <Badge className="mb-4 bg-red-500/10 text-red-600 border-red-500/20 uppercase tracking-widest">
+              <TrendingUp className="w-3 h-3 mr-1" />
+              Viral Content
+            </Badge>
+            <h2 className="text-3xl md:text-4xl font-serif font-bold">Content That Broke the Internet</h2>
+            <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">
+              Organic reach that brands dream about. No paid promotion — just authentic storytelling.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            <motion.a
+              href="https://www.instagram.com/p/DCHz_m7PKZZ/"
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="group"
+              data-testid="link-viral-instagram"
+            >
+              <Card className="h-full bg-gradient-to-br from-purple-500/5 to-pink-500/5 border-purple-200/50 hover:shadow-xl transition-all hover:-translate-y-1">
+                <CardContent className="p-8 text-center">
+                  <Instagram className="w-10 h-10 mx-auto mb-4 text-purple-500" />
+                  <div className="text-5xl font-serif font-bold text-purple-600 mb-2">44M+</div>
+                  <div className="text-lg font-medium mb-1">Views on Instagram</div>
+                  <p className="text-sm text-muted-foreground">Single organic post reaching 44 million views</p>
+                  <div className="mt-4 text-xs text-purple-500 group-hover:underline flex items-center justify-center gap-1">
+                    Watch Video <ExternalLink className="w-3 h-3" />
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.a>
+
+            <motion.a
+              href="https://www.tiktok.com/t/ZP89v7GPC/"
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="group"
+              data-testid="link-viral-tiktok"
+            >
+              <Card className="h-full bg-gradient-to-br from-[#ff0050]/5 to-[#00f2ea]/5 border-pink-200/50 hover:shadow-xl transition-all hover:-translate-y-1">
+                <CardContent className="p-8 text-center">
+                  <Heart className="w-10 h-10 mx-auto mb-4 text-pink-500" />
+                  <div className="text-5xl font-serif font-bold text-pink-600 mb-2">11.7M+</div>
+                  <div className="text-lg font-medium mb-1">Views on TikTok</div>
+                  <p className="text-sm text-muted-foreground">Single organic post reaching 11.7 million views</p>
+                  <div className="mt-4 text-xs text-pink-500 group-hover:underline flex items-center justify-center gap-1">
+                    Watch Video <ExternalLink className="w-3 h-3" />
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.a>
+          </div>
+        </div>
+      </section>
+
+      {/* Press Features */}
+      <section className="py-16 bg-white">
         <div className="container px-6 mx-auto">
           <div className="text-center mb-12">
             <Badge variant="outline" className="mb-4 uppercase tracking-widest">
@@ -217,6 +281,9 @@ export default function MediaKit() {
               Press Coverage
             </Badge>
             <h2 className="text-3xl md:text-4xl font-serif font-bold">Featured In</h2>
+            <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">
+              Featured in Newsweek 4 times in a single year, plus coverage across major media outlets worldwide.
+            </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -224,8 +291,10 @@ export default function MediaKit() {
               <motion.div
                 key={feature.id}
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.05 }}
+                data-testid={`card-press-${index}`}
               >
                 <Card className="h-full hover:shadow-lg transition-shadow">
                   <CardHeader>
@@ -246,7 +315,8 @@ export default function MediaKit() {
                     {feature.url && (
                       <Button variant="outline" size="sm" asChild>
                         <a href={feature.url} target="_blank" rel="noopener noreferrer">
-                          Read Article
+                          {feature.url.includes("youtube") || feature.url.includes("youtu.be") ? "Watch Video" :
+                           feature.url.includes("instagram") ? "View Post" : "Read Article"}
                           <ExternalLink className="w-3 h-3 ml-2" />
                         </a>
                       </Button>
