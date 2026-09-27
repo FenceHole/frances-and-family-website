@@ -1,14 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { 
-  ArrowLeft, TrendingUp, Users, Eye, Award, ExternalLink, Mail, 
+import {
+  ArrowLeft, TrendingUp, Users, Eye, Award, ExternalLink, Mail,
   Download, Tv, PawPrint, Truck, Heart, Instagram, Youtube, Twitter,
-  Linkedin, Globe, Calendar, Star, CheckCircle, Zap
+  Linkedin, Globe, Calendar, Star, CheckCircle, Zap, Newspaper, PlayCircle, Radio
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import logo from "@assets/logo.png";
 import connectProfileImage from "@assets/IMG_3334_1768604884041.jpeg";
 
@@ -70,6 +71,50 @@ const brandIcons: Record<string, React.ElementType> = {
   "The Good Meow": PawPrint,
   "Vet Van Fleet": Truck,
 };
+
+interface NewsLink {
+  outlet: string;
+  title: string;
+  url: string;
+}
+
+const newsAndPrintMedia: NewsLink[] = [
+  { outlet: "Newsweek", title: "Pregnant Stray Turns Up in Man's Garden, Now He's Dad to 8 Kittens", url: "https://www.newsweek.com/pregnant-stray-turns-mans-garden-now-hes-dad-8-kittens-1988165" },
+  { outlet: "Newsweek", title: "Cat Takes in Pregnant Stray, Keeps Kittens", url: "https://www.newsweek.com/cat-takes-pregnant-stray-keeps-kittens-1845925" },
+  { outlet: "Newsweek", title: "Man's Cats' Unusual Sleeping Plan", url: "https://www.newsweek.com/man-cats-unusual-sleeping-plan-2025660" },
+  { outlet: "Newsweek", title: "Internet-Obsessed Three-Legged Pup Saved From Euthanasia, Living Her Best Life", url: "https://www.newsweek.com/internet-obsessed-three-legged-pup-saved-euthanasia-best-life-2032596" },
+  { outlet: "China Daily (Global)", title: "Pet Lovers From Across the World Connect via RedNote", url: "https://global.chinadaily.com.cn/a/202508/19/WS68a3bcb3a310b236346f244b.html" },
+  { outlet: "China Daily HK", title: "Pet Lovers From Across the World Connect via RedNote", url: "https://www.chinadailyhk.com/hk/article/618147" },
+  { outlet: "L'Officiel Lifestyle", title: "Man Discovers Cat's Unusual New Sleeping Spot — He Has a Plan", url: "https://lofficielifestyle.com/man-discovers-cats-unusual-new-sleeping-spot-he-has-a-plan/page/3/" },
+  { outlet: "TAG24 (English)", title: "Stray Cat Rescue Changes One Man's Life Completely", url: "https://www.tag24.com/en/topic/animals/cats/stray-cat-rescue-changes-one-mans-life-completely-3073530" },
+  { outlet: "TAG24 (Deutsch)", title: "Mann nimmt streunende Katze bei sich auf — zwei Tage später ist sein Haus voller Katzen", url: "https://www.tag24.de/thema/tiere/katzen/mann-nimmt-streunende-katze-bei-sich-auf-zwei-tage-spaeter-ist-sein-haus-voller-katzen-3073530" },
+  { outlet: "RAC1 (Catalunya)", title: "La historia de una gata que emociona las redes sociales", url: "https://www.rac1.cat/animals/20241115/210870/historia-gata-emociona-xarxes-socials-plorar-lv.amp.html" },
+  { outlet: "La Vanguardia", title: "La historia de una gata que ha emocionado las redes sociales", url: "https://www.lavanguardia.com/mascotas/20241112/10099319/historia-gata-emocionado-redes-sociales-me-hagas-llorar-pmv.amp.html" },
+  { outlet: "UAI (Brasil)", title: "Gata de rua entra por buraco na cerca e transforma casa em família com 8 felinos", url: "https://www.uai.com.br/noticia/2026/05/27/gata-de-rua-entra-por-buraco-na-cerca-e-transforma-casa-em-familia-com-8-felinos/" },
+  { outlet: "La Stampa", title: "Il cane tripode, felice", url: "https://www.lastampa.it/la-zampa/2025/02/22/video/cane_tripode_felice-424020675/" },
+  { outlet: "Amo Meu Pet", title: "Homem emoldura cerca onde encontrou gatinha grávida que mudou sua vida para sempre", url: "https://www.amomeupet.org/noticias/16187/homem-emoldura-cerca-onde-encontrou-gatinha-gravida-que-mudou-sua-vida-para-sempre-hoje-eu-tenho-8-gatos-.amp" },
+  { outlet: "Femina (Hungary)", title: "Vemhes macska — segítés", url: "https://femina.hu/terasz/vemhes-macska-segites/" },
+  { outlet: "UAI (Brasil)", title: "Ela só queria comida, mas acabou mudando completamente a vida dentro daquela casa", url: "https://www.uai.com.br/noticia/2026/03/31/ela-so-queria-comida-mas-acabou-mudando-completamente-a-vida-dentro-daquela-casa/" },
+  { outlet: "Punta Canfali", title: "La historia de una gata que ha emocionado las redes sociales", url: "https://puntacanfali.co/2024/11/18/la-historia-de-una-gata-que-ha-emocionado-las-redes-sociales-no-me-hagas-llorar/" },
+  { outlet: "Cheezburger", title: "Pregnant Cat Crawls Into Hooman's Backyard Through a Hole in the Fence", url: "https://cheezburger.com/30233607/pregnant-cat-crawls-into-hoomans-backyard-through-a-hole-in-the-fence-she-changes-hoomans-life-in" },
+  { outlet: "Distractify", title: "Man Raises Cat and All Her Kittens", url: "https://www.distractify.com/p/man-raises-cat-and-all-her-kittens" },
+  { outlet: "We Love Cats and Kittens", title: "Frances", url: "https://welovecatsandkittens.com/frances/" },
+  { outlet: "WikiGenius", title: "Frances and Family — Wiki Page", url: "https://wikigenius.org/wiki/Frances_and_Family" },
+];
+
+const videoMediaFeatures: NewsLink[] = [
+  { outlet: "YouTube", title: "Feature Video", url: "https://youtu.be/WmGYZ6_RoVk" },
+  { outlet: "YouTube Shorts", title: "Short Feature", url: "https://youtube.com/shorts/8muOOTD5tUQ" },
+  { outlet: "YouTube Shorts", title: "Short Feature", url: "https://youtube.com/shorts/STCODCVakaU" },
+  { outlet: "YouTube Shorts", title: "Short Feature", url: "https://youtube.com/shorts/kub6rph37e0" },
+  { outlet: "YouTube Shorts", title: "Short Feature", url: "https://youtube.com/shorts/dUQgfrhEfbU" },
+  { outlet: "YouTube Shorts", title: "Short Feature", url: "https://youtube.com/shorts/r-UcprojGRs" },
+  { outlet: "YouTube", title: "Feature Video", url: "https://youtu.be/nhy2kqnav2A" },
+  { outlet: "YouTube", title: "Feature Video", url: "https://youtu.be/OJGXa1z97Ek" },
+  { outlet: "YouTube", title: "Feature Video", url: "https://youtu.be/7zoqA1TBCTc" },
+  { outlet: "Facebook", title: "Video Share", url: "https://www.facebook.com/share/v/1GoxeTssZ1/" },
+  { outlet: "Facebook", title: "Video Share", url: "https://www.facebook.com/share/v/1EwFve83Gb/" },
+];
 
 function formatNumber(num: number): string {
   if (num >= 1000000) return (num / 1000000).toFixed(1) + "M";
@@ -326,6 +371,119 @@ export default function MediaKit() {
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* News & Print Media */}
+      <section className="py-16">
+        <div className="container px-6 mx-auto max-w-4xl">
+          <div className="text-center mb-10">
+            <Badge variant="outline" className="mb-4 uppercase tracking-widest">
+              <Newspaper className="w-3 h-3 mr-1" />
+              News & Print Media
+            </Badge>
+            <h2 className="text-3xl md:text-4xl font-serif font-bold">As Seen Around the World</h2>
+            <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">
+              International news, print, and video coverage — from Newsweek to outlets across Europe, Asia, and South America.
+            </p>
+          </div>
+
+          <Card>
+            <CardContent className="p-2 sm:p-4">
+              <Accordion type="single" collapsible defaultValue="">
+                <AccordionItem value="news">
+                  <AccordionTrigger className="px-4">
+                    <span className="flex items-center gap-2">
+                      <Newspaper className="w-4 h-4 text-primary" />
+                      News & Print Coverage ({newsAndPrintMedia.length})
+                    </span>
+                  </AccordionTrigger>
+                  <AccordionContent className="px-4">
+                    <ul className="divide-y divide-border">
+                      {newsAndPrintMedia.map((item, index) => (
+                        <li key={index}>
+                          <a
+                            href={item.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center justify-between gap-4 py-2.5 group"
+                            data-testid={`link-news-${index}`}
+                          >
+                            <span className="flex items-baseline gap-3 min-w-0">
+                              <span className="text-xs font-bold uppercase tracking-wide text-primary shrink-0">
+                                {item.outlet}
+                              </span>
+                              <span className="text-sm text-muted-foreground truncate group-hover:text-foreground transition-colors">
+                                {item.title}
+                              </span>
+                            </span>
+                            <ExternalLink className="w-3.5 h-3.5 text-muted-foreground shrink-0 group-hover:text-primary transition-colors" />
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="video">
+                  <AccordionTrigger className="px-4">
+                    <span className="flex items-center gap-2">
+                      <PlayCircle className="w-4 h-4 text-primary" />
+                      Video Media Features ({videoMediaFeatures.length})
+                    </span>
+                  </AccordionTrigger>
+                  <AccordionContent className="px-4">
+                    <ul className="divide-y divide-border">
+                      {videoMediaFeatures.map((item, index) => (
+                        <li key={index}>
+                          <a
+                            href={item.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center justify-between gap-4 py-2.5 group"
+                            data-testid={`link-video-${index}`}
+                          >
+                            <span className="flex items-baseline gap-3 min-w-0">
+                              <span className="text-xs font-bold uppercase tracking-wide text-primary shrink-0">
+                                {item.outlet}
+                              </span>
+                              <span className="text-sm text-muted-foreground truncate group-hover:text-foreground transition-colors">
+                                {item.title}
+                              </span>
+                            </span>
+                            <ExternalLink className="w-3.5 h-3.5 text-muted-foreground shrink-0 group-hover:text-primary transition-colors" />
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="livestreams" className="border-b-0">
+                  <AccordionTrigger className="px-4">
+                    <span className="flex items-center gap-2">
+                      <Radio className="w-4 h-4 text-primary" />
+                      Reddit Livestreams (Chronological)
+                    </span>
+                  </AccordionTrigger>
+                  <AccordionContent className="px-4">
+                    <a
+                      href="https://youtube.com/playlist?list=PLJvNm1VHUp-wVkPnI7nlHsTN5edGQU5VV"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-between gap-4 py-2.5 group"
+                      data-testid="link-livestream-playlist"
+                    >
+                      <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">
+                        Full playlist, in chronological order, on YouTube
+                      </span>
+                      <ExternalLink className="w-3.5 h-3.5 text-muted-foreground shrink-0 group-hover:text-primary transition-colors" />
+                    </a>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            </CardContent>
+          </Card>
         </div>
       </section>
 
